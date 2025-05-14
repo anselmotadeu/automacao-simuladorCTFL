@@ -1,0 +1,31 @@
+name: E2E Tests with Report
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  e2e-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Executar testes com geração de relatório
+        run: npm run full:report
+
+      - name: Upload do relatório HTML
+        uses: actions/upload-artifact@v4
+        with:
+          name: Relatorio-Testes-E2E
+          path: cypress/reports/html
