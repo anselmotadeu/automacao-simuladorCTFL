@@ -11,7 +11,9 @@
     "run:exam3": "npx cypress run --spec 'cypress/e2e/exam3.cy.js' --reporter mochawesome --reporter-options reportDir=cypress/reports/json,overwrite=false,html=false",
     "merge:reports": "npx mochawesome-merge cypress/reports/json/*.json > cypress/reports/report.json",
     "generate:html": "npx marge cypress/reports/report.json --reportDir cypress/reports/html",
-    "full:report": "npm run run:exam1 && npm run run:exam2 && npm run run:exam3 && npm run merge:reports && npm run generate:html"
+    "full:report": "npm run run:exam1 && npm run run:exam2 && npm run run:exam3 && npm run merge:reports && npm run generate:html",
+    "report:generate": "npx mochawesome-merge cypress/reports/mochawesome/*.json -o mochawesome.json && npx mochawesome-report-generator mochawesome.json -o mochawesome-report",
+    "report:open": "npx mochawesome-report-generator mochawesome.json -o mochawesome-report && npx open mochawesome-report/mochawesome.html"
   },
   "keywords": [],
   "author": "Anselmo Santos",
