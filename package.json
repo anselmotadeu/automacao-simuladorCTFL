@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "open": "npx cypress open",
-    "run": "npx cypress run"
+    "runAll": "npx cypress run",
+    "run:exam1": "npx cypress run --spec 'cypress/e2e/exam1.cy.js'",
+    "run:exam2": "npx cypress run --spec 'cypress/e2e/exam2.cy.js'",
+    "run:exam3": "npx cypress run --spec 'cypress/e2e/exam3.cy.js'"
   },
   "keywords": [],
   "author": "Anselmo Santos",
