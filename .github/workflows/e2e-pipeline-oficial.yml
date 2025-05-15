@@ -60,6 +60,7 @@ jobs:
           npm install -g mochawesome-merge mochawesome-report-generator
           npx mochawesome-merge cypress/reports/**/mochawesome*.json > mochawesome.json
           npx marge mochawesome.json --reportDir=public --inline
+          cp public/mochawesome.html public/index.html
 
       - name: Set Git remote manually
         run: |
