@@ -1,73 +1,56 @@
-
-name: E2E Tests with Report and Pages
+name: 🚀 Cypress Tests - Execução Paralela + Relatório + GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 jobs:
   exam1:
-    name: Exam 1
+    name: 🧪 Exam 1
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Install dependencies
-        run: npm ci
-      - name: Run exam1 and generate report
-        run: |
-          npx cypress run --spec 'cypress/e2e/exam1.cy.js' --reporter mochawesome --reporter-options reportDir=cypress/reports/exam1,overwrite=false,html=false,json=true
-      - name: Upload exam1 report
-        uses: actions/upload-artifact@v4
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm run run:exam1
+      - uses: actions/upload-artifact@v4
         with:
           name: exam1-report
-          path: cypress/reports/exam1
+          path: cypress/reports
 
   exam2:
-    name: Exam 2
+    name: 🧪 Exam 2
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Install dependencies
-        run: npm ci
-      - name: Run exam2 and generate report
-        run: |
-          npx cypress run --spec 'cypress/e2e/exam2.cy.js' --reporter mochawesome --reporter-options reportDir=cypress/reports/exam2,overwrite=false,html=false,json=true
-      - name: Upload exam2 report
-        uses: actions/upload-artifact@v4
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm run run:exam2
+      - uses: actions/upload-artifact@v4
         with:
           name: exam2-report
-          path: cypress/reports/exam2
+          path: cypress/reports
 
   exam3:
-    name: Exam 3
+    name: 🧪 Exam 3
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Install dependencies
-        run: npm ci
-      - name: Run exam3 and generate report
-        run: |
-          npx cypress run --spec 'cypress/e2e/exam3.cy.js' --reporter mochawesome --reporter-options reportDir=cypress/reports/exam3,overwrite=false,html=false,json=true
-      - name: Upload exam3 report
-        uses: actions/upload-artifact@v4
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm run run:exam3
+      - uses: actions/upload-artifact@v4
         with:
           name: exam3-report
-          path: cypress/reports/exam3
+          path: cypress/reports
 
   merge-and-publish:
-    name: Merge Reports and Deploy GitHub Pages
-    needs: [exam1, exam2, exam3]
+    name: 📊 Merge Reports & Deploy
     runs-on: ubuntu-latest
+    needs: [exam1, exam2, exam3]
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Download all reports
+      - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
           path: cypress/reports
@@ -78,8 +61,17 @@ jobs:
           npx mochawesome-merge cypress/reports/**/mochawesome*.json > mochawesome.json
           npx marge mochawesome.json --reportDir=public --inline
 
+      - name: Set Git remote manually
+        run: |
+          git config --global user.name "anselmotadeu"
+          git config --global user.email "anselmotadeu@users.noreply.github.com"
+          git remote remove origin || true
+          git remote add origin https://github.com/${{ github.repository }}.git
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
+          publish_branch: gh-pages
+          force_orphan: true
