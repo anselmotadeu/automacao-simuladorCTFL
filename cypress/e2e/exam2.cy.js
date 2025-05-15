@@ -90,7 +90,7 @@ describe('Simulador CTFL - Exam 2 (PageObject com 8 cenários)', () => {
     SimulatorPage.logMensagem('✅ O botão está corretamente desabilitado sem seleção de resposta.');
   });
 
-  it('🌓 Cenário 7 - Alternando acertos e erros (Aprovado)', () => {
+  it('🌓 Cenário 7 - Alternando acertos e erros (Reprovado)', () => {
     SimulatorPage.responderQuestoes(
       examData,
       (q, i) => i % 2 === 0 ? q.answer : (q.answer === 0 ? 1 : 0),
